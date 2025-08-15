@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { Toaster } from "sonner";
 import Layout from "./components/Layout/Layout";
 
 // Importation des composants Home
@@ -47,6 +48,12 @@ const App = () => {
           <Route path="/reparations/:id/edit" element={<UpdateReparation />} />
         </Routes>
       </Layout>
+      <Toaster 
+        position="top-right"
+        richColors
+        closeButton
+        duration={4000}
+      />
     </Router>
   );
 };

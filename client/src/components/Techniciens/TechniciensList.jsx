@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import techniciensService from '../../services/techniciensService';
 import { ROUTES, SUCCESS_MESSAGES, ERROR_MESSAGES } from '../../utils/constants';
 
@@ -28,16 +29,17 @@ const TechniciensList = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce technicien ?')) {
+    // CONFIRMATION DE SUPPRESSION - DÉCOMMENTER POUR RÉACTIVER
+    // if (window.confirm('Êtes-vous sûr de vouloir supprimer ce technicien ?')) {
       try {
         await techniciensService.delete(id);
         setTechniciens(techniciens.filter(t => t.id !== id));
-        alert(SUCCESS_MESSAGES.DELETED);
+        toast.success(SUCCESS_MESSAGES.DELETED);
       } catch (err) {
-        alert('Erreur lors de la suppression');
+        toast.error('Erreur lors de la suppression');
         console.error('Erreur lors de la suppression:', err);
       }
-    }
+    // }
   };
 
   if (loading) {
@@ -65,73 +67,73 @@ const TechniciensList = () => {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="mb-0">Liste des techniciens</h2>
-        <div>
-          <Link to={ROUTES.HOME} className="btn btn-secondary me-2">
-            🏠 Retour à l'accueil
-          </Link>
-          <Link to={ROUTES.TECHNICIENS_CREATE} className="btn btn-primary">
-            <i className="fas fa-plus me-1"></i>
-            Ajouter
-          </Link>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2 className="mb-0">Liste des techniciens</h2>
+          <div>
+            <Link to={ROUTES.HOME} className="btn btn-secondary me-2">
+              🏠 Retour à l'accueil
+            </Link>
+            <Link to={ROUTES.TECHNICIENS_CREATE} className="btn btn-primary">
+              <i className="fas fa-plus me-1"></i>
+              Ajouter
+            </Link>
+          </div>
         </div>
-      </div>
 
-      {techniciens.length === 0 ? (
-        <div className="alert alert-info text-center">
-          <i className="fas fa-info-circle me-2"></i>
-          Aucun technicien enregistré. 
-          <Link to={ROUTES.TECHNICIENS_CREATE} className="alert-link ms-1">
-            Ajouter le premier technicien
-          </Link>
-        </div>
-      ) : (
-        <div className="table-responsive">
-          <table className="table table-striped table-hover">
-            <thead className="table-info">
-              <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Spécialité</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {techniciens.map((technicien) => (
-                <tr key={technicien.id}>
-                  <td>
-                    <strong>{technicien.nom}</strong>
-                  </td>
-                  <td>{technicien.prenom}</td>
-                  <td>
-                    <span className="badge bg-info text-dark">
-                      {technicien.specialite}
-                    </span>
-                  </td>
-                  <td>
-                    <div className="btn-group" role="group">
-                      <button
-                        className="btn btn-warning btn-sm"
-                        onClick={() => navigate(`/techniciens/${technicien.id}/edit`)}
-                        title="Modifier"
-                      >
-                        <i className="fas fa-edit"></i>
-                      </button>
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => handleDelete(technicien.id)}
-                        title="Supprimer"
-                      >
-                        <i className="fas fa-trash"></i>
-                      </button>
-                    </div>
-                  </td>
+        {techniciens.length === 0 ? (
+          <div className="alert alert-info text-center">
+            <i className="fas fa-info-circle me-2"></i>
+            Aucun technicien enregistré. 
+            <Link to={ROUTES.TECHNICIENS_CREATE} className="alert-link ms-1">
+              Ajouter le premier technicien
+            </Link>
+          </div>
+        ) : (
+          <div className="table-responsive">
+            <table className="table table-striped table-hover">
+              <thead className="table-info">
+                <tr>
+                  <th>Nom</th>
+                  <th>Prénom</th>
+                  <th>Spécialité</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {techniciens.map((technicien) => (
+                  <tr key={technicien.id}>
+                    <td>
+                      <strong>{technicien.nom}</strong>
+                    </td>
+                    <td>{technicien.prenom}</td>
+                    <td>
+                      <span className="badge bg-info text-dark">
+                        {technicien.specialite}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="btn-group" role="group">
+                        <button
+                          className="btn btn-warning btn-sm"
+                          onClick={() => navigate(`/techniciens/${technicien.id}/edit`)}
+                          title="Modifier"
+                        >
+                          <i className="fas fa-edit"></i>
+                        </button>
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleDelete(technicien.id)}
+                          title="Supprimer"
+                        >
+                          <i className="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+                  </div>
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import reparationsService from '../../services/reparationsService';
 import vehiculesService from '../../services/vehiculesService';
 import techniciensService from '../../services/techniciensService';
@@ -39,7 +40,7 @@ const CreateReparation = () => {
       setTechniciens(techniciensData);
     } catch (error) {
       console.error('Erreur lors du chargement des données:', error);
-      alert(ERROR_MESSAGES.NETWORK_ERROR);
+      toast.error(ERROR_MESSAGES.NETWORK_ERROR);
     } finally {
       setLoadingData(false);
     }
@@ -111,13 +112,13 @@ const CreateReparation = () => {
       };
 
       await reparationsService.create(reparationData);
-      alert(SUCCESS_MESSAGES.CREATED);
+      toast.success(SUCCESS_MESSAGES.CREATED);
       navigate(ROUTES.REPARATIONS);
     } catch (error) {
       if (error.response?.data?.errors) {
         setErrors(error.response.data.errors);
       } else {
-        alert(ERROR_MESSAGES.NETWORK_ERROR);
+        toast.error(ERROR_MESSAGES.NETWORK_ERROR);
       }
       console.error('Erreur lors de la création:', error);
     } finally {
@@ -137,9 +138,9 @@ const CreateReparation = () => {
 
   return (
     <div className="container mt-4">
-      <div className="row justify-content-center">
-        <div className="col-md-8">
-          <div className="card">
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card">
             <div className="card-header">
               <div className="d-flex justify-content-between align-items-center">
                 <h3 className="mb-0">Ajouter une réparation</h3>

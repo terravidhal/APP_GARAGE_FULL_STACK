@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import vehiculesService from '../../services/vehiculesService';
 import { 
   ROUTES, 
@@ -54,7 +55,7 @@ const UpdateVehicule = () => {
       if (error.response?.status === 404) {
         setNotFound(true);
       } else {
-        alert(ERROR_MESSAGES.NETWORK_ERROR);
+        toast.error(ERROR_MESSAGES.NETWORK_ERROR);
         console.error('Erreur lors du chargement du véhicule:', error);
       }
     } finally {
@@ -123,13 +124,13 @@ const UpdateVehicule = () => {
       };
 
       await vehiculesService.update(id, vehiculeData);
-      alert(SUCCESS_MESSAGES.UPDATED);
+      toast.success(SUCCESS_MESSAGES.UPDATED);
       navigate(ROUTES.VEHICULES);
     } catch (error) {
       if (error.response?.data?.errors) {
         setErrors(error.response.data.errors);
       } else {
-        alert(ERROR_MESSAGES.NETWORK_ERROR);
+        toast.error(ERROR_MESSAGES.NETWORK_ERROR);
       }
       console.error('Erreur lors de la mise à jour:', error);
     } finally {
@@ -163,9 +164,9 @@ const UpdateVehicule = () => {
 
   return (
     <div className="container mt-4">
-      <div className="row justify-content-center">
-        <div className="col-md-8">
-          <div className="card">
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card">
             <div className="card-header">
               <div className="d-flex justify-content-between align-items-center">
                 <h3 className="mb-0">Modifier le véhicule</h3>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import vehiculesService from '../../services/vehiculesService';
 import { ROUTES, SUCCESS_MESSAGES, ERROR_MESSAGES } from '../../utils/constants';
 
@@ -28,16 +29,17 @@ const VehiculesList = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?')) {
+    // CONFIRMATION DE SUPPRESSION - DÉCOMMENTER POUR RÉACTIVER
+    // if (window.confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?')) {
       try {
         await vehiculesService.delete(id);
         setVehicules(vehicules.filter(v => v.id !== id));
-        alert(SUCCESS_MESSAGES.DELETED);
+        toast.success(SUCCESS_MESSAGES.DELETED);
       } catch (err) {
-        alert('Erreur lors de la suppression');
+        toast.error('Erreur lors de la suppression');
         console.error('Erreur lors de la suppression:', err);
       }
-    }
+    // }
   };
 
   if (loading) {
@@ -65,18 +67,18 @@ const VehiculesList = () => {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="mb-0">Liste des véhicules</h2>
-        <div>
-          <Link to={ROUTES.HOME} className="btn btn-secondary me-2">
-            🏠 Retour à l'accueil
-          </Link>
-          <Link to={ROUTES.VEHICULES_CREATE} className="btn btn-primary">
-            <i className="fas fa-plus me-1"></i>
-            Ajouter
-          </Link>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2 className="mb-0">Liste des véhicules</h2>
+          <div>
+            <Link to={ROUTES.HOME} className="btn btn-secondary me-2">
+              🏠 Retour à l'accueil
+            </Link>
+            <Link to={ROUTES.VEHICULES_CREATE} className="btn btn-primary">
+              <i className="fas fa-plus me-1"></i>
+              Ajouter
+            </Link>
+          </div>
         </div>
-      </div>
 
       {vehicules.length === 0 ? (
         <div className="alert alert-info text-center">

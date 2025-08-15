@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import reparationsService from '../../services/reparationsService';
 import { ROUTES, SUCCESS_MESSAGES, ERROR_MESSAGES } from '../../utils/constants';
 
@@ -28,16 +29,17 @@ const ReparationsList = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer cette réparation ?')) {
+    // CONFIRMATION DE SUPPRESSION - DÉCOMMENTER POUR RÉACTIVER
+    // if (window.confirm('Êtes-vous sûr de vouloir supprimer cette réparation ?')) {
       try {
         await reparationsService.delete(id);
         setReparations(reparations.filter(r => r.id !== id));
-        alert(SUCCESS_MESSAGES.DELETED);
+        toast.success(SUCCESS_MESSAGES.DELETED);
       } catch (err) {
-        alert('Erreur lors de la suppression');
+        toast.error('Erreur lors de la suppression');
         console.error('Erreur lors de la suppression:', err);
       }
-    }
+    // }
   };
 
   const formatDate = (dateString) => {
@@ -71,8 +73,8 @@ const ReparationsList = () => {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="mb-0">Liste des réparations</h2>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2 className="mb-0">Liste des réparations</h2>
         <div>
           <Link to={ROUTES.HOME} className="btn btn-secondary me-2">
             🏠 Retour à l'accueil
